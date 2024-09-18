@@ -1,14 +1,29 @@
 "use client";
 import { CldImage } from "next-cloudinary";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 
 export default function QuoteAll() {
   const [quotes, setQuotes] = useState([]);
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    fetchImages();
+  }, []);
+
+  const fetchImages = async () => {
+    try {
+      const response = await fetch(`/api/getImages`);
+      const data = await response.json();
+      setImages(data); // Store image public_ids in state
+    } catch (error) {
+      console.error("Error fetching images:", error);
+    }
+  };
 
   const fetchQuotes = async () => {
     try {
-      const response = await fetch(`/api/quotes`); // Ensure this endpoint works correctly
+      const response = await fetch(`/api/quotes`);
       const data = await response.json();
       setQuotes(data);
     } catch (error) {
@@ -18,50 +33,52 @@ export default function QuoteAll() {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex justify-center mb-4">
-        <CldImage
-          crop="fill"  
-          priority
-          width="300"
-          height="300"
-          src="Quotes/cukpfut6mwqb9vt18hsw"
-          alt="Inspirational Quote Background"
-          className="object-cover rounded-lg shadow-lg m-2"
-        />
-        <CldImage
-          crop="fill"  
-          priority
-          width="300"
-          height="300"
-          src="Quotes/zcbkupgwoo2ocilqtgwf"
-          alt="Inspirational Quote Background"
-          className="object-cover rounded-lg shadow-lg m-2"
-        />
-        <CldImage
-          crop="fill"  
-          priority
-          width="300"
-          height="300"
-          src="Quotes/zae0pn0ghakgn421thxo"
-          alt="Inspirational Quote Background"
-          className="object-cover rounded-lg shadow-lg m-2"
-        />
+      {/* Centered Generate Posts Button */}
+      <div className="flex justify-center my-8">
+        <Button
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg text-lg font-bold"
+          onClick={fetchQuotes}
+        >
+          Generate Posts
+        </Button>
       </div>
-      <Button
-        onClick={fetchQuotes}
-      >
-        Generate Posts
-      </Button>
-      <h1 className="text-2xl font-bold my-4">Quotes</h1>
-      {quotes.length === 0 ? (
-        <p className="text-gray-600">No quotes available. Click the button to load quotes.</p>
-      ) : (
-        quotes.map((quote, index) => (
-          <div key={index} className="my-4 p-4 border border-gray-200 rounded-lg shadow-md">
-            <p className="text-lg font-semibold">{quote.q}</p>
-            <p className="text-sm text-gray-600 mt-2">- {quote.a}</p>
+      {/* Instagram-like Post Container */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center mb-4">
+        {images.map((image, index) => (
+          <div
+            key={index}
+            className="relative bg-white shadow-lg border  overflow-hidden"
+          >
+            {/* Image Section */}
+            <CldImage
+              crop="fill"
+              priority
+              width="400"
+              height="400"
+              src={image} // Cloudinary public_id
+              alt={`Quote Background ${index + 1}`}
+              className="object-cover "
+            />
+
+            {/* Centered Quote Overlay */}
+            {quotes[index] && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 text-white text-center">
+                {/* Center the blockquote */}
+                <div
+                  className="text-lg font-semibold leading-tight"
+                  dangerouslySetInnerHTML={{ __html: quotes[index].h }}
+                />
+              </div>
+            )}
           </div>
-        ))
+        ))}
+      </div>
+
+      {/* Placeholder text when no quotes are available */}
+      {quotes.length === 0 && (
+        <p className="text-gray-600 text-center my-4">
+          No quotes available. Click the button to load quotes.
+        </p>
       )}
     </div>
   );

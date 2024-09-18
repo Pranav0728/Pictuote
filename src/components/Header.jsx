@@ -10,13 +10,12 @@ export function Header() {
           <h1 className="text-2xl font-medium">Pictuote</h1>
 
           <div className="space-x-4 flex flex-row items-center">
-            <Link href="/" class=" hover:text-gray-400 text-xl">
+            <Link href="/" className=" hover:text-gray-400 text-xl">
               Home
             </Link>
-            <Link href="#" class=" hover:text-gray-400 text-xl">
+            <Link href="#" className=" hover:text-gray-400 text-xl">
               About
             </Link>
-
             <ModeToggle />
           </div>
         </div>
