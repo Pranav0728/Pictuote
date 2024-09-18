@@ -1,4 +1,3 @@
-// /pages/api/getImages.js
 import { v2 as cloudinary } from 'cloudinary';
 import { NextResponse } from 'next/server';
 
@@ -11,20 +10,28 @@ cloudinary.config({
 export async function GET() {
   try {
     const result = await cloudinary.search
-      .expression('folder:Quotes') // Ensure folder name is correct
-      .max_results(5)
+      .expression('folder:Quotes_General')
+      .max_results(100) // Fetch more images to choose from
       .execute();
 
     if (!result || !result.resources) {
       throw new Error("No resources found in Cloudinary response.");
     }
 
-    const imageUrls = result.resources.map((file) => file.public_id);
+    // Shuffle the images array to simulate randomness
+    const shuffledImages = result.resources.sort(() => 0.5 - Math.random());
+    const randomImages = shuffledImages.slice(0, 6);
+
+    // Generate image URLs without transformations
+    const imageUrls = randomImages.map((file) => {
+      return (file.public_id);
+    });
+
     return NextResponse.json(imageUrls);
   } catch (e) {
     console.error("Error fetching images from Cloudinary:", e.message);
     return new NextResponse(
-      JSON.stringify({ message: "Error fetching quotes", error: e.message }),
+      JSON.stringify({ message: "Error fetching images", error: e.message }),
       { status: 500 }
     );
   }

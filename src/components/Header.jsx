@@ -13,8 +13,8 @@ export function Header() {
             <Link href="/" className=" hover:text-gray-400 text-xl">
               Home
             </Link>
-            <Link href="#" className=" hover:text-gray-400 text-xl">
-              About
+            <Link href="/upload" className=" hover:text-gray-400 text-xl">
+              Upload
             </Link>
             <ModeToggle />
           </div>

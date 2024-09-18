@@ -5,11 +5,11 @@ export async function GET() {
     const response = await fetch(`https://zenquotes.io/api/quotes?random=${Math.random()}`);
     const data = await response.json();
     console.log(data)
-    return NextResponse.json(data); // Use built-in method to send JSON response
+    return NextResponse.json(data); 
   } catch (e) {
     return new NextResponse(
       JSON.stringify({ message: "Error fetching quotes", error: e.message }),
-      { status: 500 } // Return a 500 error status
+      { status: 500 } 
     );
   }
 }
