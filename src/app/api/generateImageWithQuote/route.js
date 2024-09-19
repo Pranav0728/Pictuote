@@ -31,10 +31,11 @@ export async function GET(req) {
         },
         {
           background: "black",
-          opacity: 40, // 40% opacity for the black background
+          opacity: 50, 
           width: 1080,
           height: 1080,
           crop: "fill",
+          gravity: "center",
         },
         {
           // Add the text overlay on top of the image
@@ -50,7 +51,7 @@ export async function GET(req) {
           },
           color: "white",
           gravity: "center",
-          width: 1000, // Adjust width to fit inside the image
+          width: 900, // Adjust width to fit inside the image
           crop: "fit",
         }
       ],

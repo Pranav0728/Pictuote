@@ -46,11 +46,34 @@ export default function QuoteAll() {
     try {
       const response = await fetch(`/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(quote)}`);
       const data = await response.json();
-      window.open(data.url, '_blank');
+      
+      // Fetch the image data as a blob
+      const imageResponse = await fetch(data.url);
+      const blob = await imageResponse.blob();
+      
+      // Create a temporary URL for the blob
+      const url = URL.createObjectURL(blob);
+      
+      // Create a temporary anchor element
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'quote-image.png'; // Default filename, you can change it as needed
+      
+      // Append the anchor to the body
+      document.body.appendChild(link);
+      
+      // Trigger the download
+      link.click();
+      
+      // Cleanup
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url); // Release the object URL
     } catch (error) {
       console.error("Error generating image with quote:", error);
     }
   };
+  
+  
 
   return (
     <div className="container mx-auto p-4">
