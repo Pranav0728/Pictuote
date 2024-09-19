@@ -10,7 +10,7 @@ cloudinary.config({
 export async function GET() {
   try {
     const result = await cloudinary.search
-      .expression('folder:Quotes')
+      .expression('folder:Quotes/General')
       .max_results(100) // Fetch more images to choose from
       .execute();
 

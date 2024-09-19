@@ -46,6 +46,7 @@ export default function QuoteAll() {
     try {
       const response = await fetch(`/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(quote)}`);
       const data = await response.json();
+      console.log(data)
       
       // Fetch the image data as a blob
       const imageResponse = await fetch(data.url);
@@ -72,14 +73,12 @@ export default function QuoteAll() {
       console.error("Error generating image with quote:", error);
     }
   };
-  
-  
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container pt-10 mx-auto p-4">
       <div className="flex justify-center my-8">
         <Button
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg text-lg font-bold"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg text-lg font-bold button"
           onClick={generateQuote}
         >
           Generate Posts
@@ -110,7 +109,7 @@ export default function QuoteAll() {
                   height="400"
                   src={image}
                   alt={`Quote Background ${index + 1}`}
-                  className="object-cover "
+                  className="object-cover"
                 />
 
                 {quotes[index] && (
