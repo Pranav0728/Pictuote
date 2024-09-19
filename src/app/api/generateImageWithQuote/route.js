@@ -14,8 +14,8 @@ export async function GET(req) {
     const quote = searchParams.get("quote") || "Your Quote Here"; // Default text if no quote provided
 
     // Log the parameters to make sure they're correctly received
-    console.log('Image Public ID:', imagePublicId);
-    console.log('Quote:', quote);
+    console.log("Image Public ID:", imagePublicId);
+    console.log("Quote:", quote);
 
     if (!imagePublicId) {
       throw new Error("Missing required query parameter: imagePublicId");
@@ -25,24 +25,34 @@ export async function GET(req) {
     const imageUrl = cloudinary.url(imagePublicId, {
       transformation: [
         {
-          color:"white",
           width: 1080,
           height: 1080,
           crop: "fill", // Instagram post dimensions
         },
         {
+          background: "black",
+          opacity: 40, // 40% opacity for the black background
+          width: 1080,
+          height: 1080,
+          crop: "fill",
+        },
+        {
           // Add the text overlay on top of the image
           overlay: {
-            font_family: "Poppins",
+            // font_family: "Courier new",
+            font_family: "Arial",
+            // font_family: "Open sans",
+            // font_family: "Verdana",
+            // font_family: "Roboto",
             font_size: 50,
+            font_weight: "semi-bold",
             text: quote,
-            font_weight: "semibold",
           },
-          gravity: "center",
           color: "white",
+          gravity: "center",
           width: 1000, // Adjust width to fit inside the image
           crop: "fit",
-        },
+        }
       ],
     });
 
