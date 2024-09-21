@@ -2,6 +2,7 @@
 import { CldImage } from "next-cloudinary";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { ArrowDownIcon, Download } from "lucide-react";
 
 const htmlToText = (html) => {
   const tempDiv = document.createElement('div');
@@ -75,14 +76,15 @@ export default function QuoteAll() {
   };
 
   return (
-    <div className="container pt-10 mx-auto p-4">
+    <>
+    <div className="container mx-auto p-4">
       <div className="flex justify-center my-8">
         <Button
           className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg text-lg font-bold button"
           onClick={generateQuote}
         >
           Generate Posts
-        </Button>
+        </Button> 
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center mb-4">
@@ -123,10 +125,10 @@ export default function QuoteAll() {
 
                 <div className="absolute bottom-0 right-0 m-2">
                   <Button
-                    className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg"
+                    className=" hover:opacity-50 px-3 py-1 rounded-lg"
                     onClick={() => handleDownload(image, htmlToText(quotes[index].h))}
                   >
-                    Download
+                    <ArrowDownIcon />
                   </Button>
                 </div>
               </div>
@@ -139,5 +141,6 @@ export default function QuoteAll() {
         </p>
       )}
     </div>
+    </>
   );
 }
