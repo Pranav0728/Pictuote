@@ -46,12 +46,13 @@ export async function GET(req) {
             // font_family: "Verdana",
             // font_family: "Roboto",
             font_size: 50,
-            font_weight: "semi-bold",
+            font_weight: "bold",
+            text_align: "center",
             text: quote,
           },
           color: "white",
           gravity: "center",
-          width: 900, // Adjust width to fit inside the image
+          width: 1000, // Adjust width to fit inside the image
           crop: "fit",
         }
       ],

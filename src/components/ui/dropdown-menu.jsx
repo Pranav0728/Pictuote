@@ -143,7 +143,7 @@ const DropdownMenuShortcut = ({
 }
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut"
 
-export {
+export  {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,

@@ -25,12 +25,12 @@ export default function HomeHeader({ className }) {
       title: "Home",
     },
     {
-      href: `/services`,
-      title: "Services",
+      href: `/post`,
+      title: "Posts",
     },
     {
-      href: `/contact`,
-      title: "Contact",
+      href: `/feedback`,
+      title: "Feedback",
     },
   ];
 
@@ -38,8 +38,8 @@ export default function HomeHeader({ className }) {
     <Link href="/" className="pointer flex items-center">
       <Image
         alt="logo"
-        src="/image/logo.png"
-        className="mr-3"
+        src="/image/post_logo.png"
+        className="m-3"
         width={50}
         height={50}
         priority
@@ -67,7 +67,7 @@ export default function HomeHeader({ className }) {
             <Link href={item.href} key={item.title} passHref>
               <p
                 className={cn(
-                  selected ? " font-bold cursor-pointer" : " cursor-pointer"
+                  selected ? "text-xl font-bold cursor-pointer" : " cursor-pointer text-lg"
                 )}
               >
                 {item.title}
@@ -82,7 +82,7 @@ export default function HomeHeader({ className }) {
   return (
     <div
       className={cn(
-        `flex md:h-12 h-14 items-center justify-center w-full border-b`,
+        `flex md:h-15 h-20 items-center justify-center w-full border-b `,
         className
       )}
     >
