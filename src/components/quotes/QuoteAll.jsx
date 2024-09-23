@@ -1,13 +1,13 @@
 "use client";
 import { CldImage } from "next-cloudinary";
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { ArrowDownIcon } from "lucide-react";
 
 const htmlToText = (html) => {
-  const tempDiv = document.createElement('div');
+  const tempDiv = document.createElement("div");
   tempDiv.innerHTML = html;
-  return tempDiv.textContent || tempDiv.innerText || '';
+  return tempDiv.textContent || tempDiv.innerText || "";
 };
 
 export default function QuoteAll() {
@@ -29,8 +29,8 @@ export default function QuoteAll() {
       setImages(data);
     } catch (error) {
       console.error("Error fetching images:", error);
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,16 +47,20 @@ export default function QuoteAll() {
   const handleDownload = async (image, quote, index) => {
     setDownloadingIndex(index); // Set the index of the downloading image
     try {
-      const response = await fetch(`/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(quote)}`);
+      const response = await fetch(
+        `/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(
+          quote
+        )}`
+      );
       const data = await response.json();
-      
+
       const imageResponse = await fetch(data.url);
       const blob = await imageResponse.blob();
       const url = URL.createObjectURL(blob);
 
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.download = 'quote-image.png';
+      link.download = "quote-image.png";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -73,7 +77,7 @@ export default function QuoteAll() {
       <div className="container mx-auto p-4">
         <div className="flex justify-center my-8">
           <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg text-lg font-bold"
+            className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-full shadow-lg text-lg font-bold"
             onClick={generateQuote}
           >
             Generate Posts
@@ -82,7 +86,7 @@ export default function QuoteAll() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center mb-4">
           {loading
-            ? Array(6)
+            ? Array(50)
                 .fill(0)
                 .map((_, index) => (
                   <div
@@ -119,14 +123,22 @@ export default function QuoteAll() {
                   <div className="absolute bottom-0 right-0 m-2">
                     <Button
                       className={`hover:opacity-50 px-3 py-1 hover:bg-gray-200 rounded-lg ${
-                        downloadingIndex === index ? "bg-green-600" : "bg-gray-200"
+                        downloadingIndex === index
+                          ? "bg-green-600"
+                          : "bg-gray-200"
                       }`}
-                      onClick={() => handleDownload(image, htmlToText(quotes[index].h), index)}
+                      onClick={() =>
+                        handleDownload(
+                          image,
+                          htmlToText(quotes[index].h),
+                          index
+                        )
+                      }
                     >
                       {downloadingIndex === index ? (
                         <div className="loader"></div> // Add your spinner here
                       ) : (
-                        <ArrowDownIcon color="black"/>
+                        <ArrowDownIcon color="black" />
                       )}
                     </Button>
                   </div>
@@ -136,7 +148,7 @@ export default function QuoteAll() {
 
         {!loading && quotes.length === 0 && (
           <p className="text-gray-600 text-center my-4">
-           Click the button to load quotes.
+            Click the button to load quotes.
           </p>
         )}
       </div>

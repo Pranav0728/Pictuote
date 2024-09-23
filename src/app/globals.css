@@ -82,3 +82,45 @@
   100% { transform: rotate(360deg); }
 }
 
+.glow {
+  font-family: 'Teko', sans-serif;
+  grid-column: 1;
+  grid-row: 1;
+  align-self: end;
+  justify-self: center;
+  padding-bottom: 1rem;
+  color: #ec4899; /* Matches text-pink-500 */
+  animation: pinkGlow 1.5s infinite alternate;
+}
+
+@keyframes pinkGlow {
+  from {
+    text-shadow: 0 0 20px #ec4899;
+  }
+  to {
+    text-shadow: 0 0 30px #ec4899, 0 0 10px #f472b6;
+  }
+}
+
+.glowi {
+  font-family: 'Teko', sans-serif;
+  grid-column: 1;
+  grid-row: 1;
+  align-self: end;
+  justify-self: center;
+  padding-bottom: 1rem;
+  color: #8b5cf6; /* Matches purple-500 */
+  animation: purpleGlow 1.5s infinite alternate;
+}
+
+@keyframes purpleGlow {
+  from {
+    text-shadow: 0 0 20px #8b5cf6; /* Purple-500 */
+  }
+  to {
+    text-shadow: 0 0 25px #8b5cf6, 0 0 10px #9575f5; /* Purple-400 */
+  }
+}
+
+
+

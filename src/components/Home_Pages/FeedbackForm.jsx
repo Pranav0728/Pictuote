@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import HomeHeader from "@/components/Header";
 
 function Feedback() {
   const [name, setName] = useState("");
@@ -51,17 +50,16 @@ function Feedback() {
 
   return (
     <>
-      <HomeHeader />
       <div className="flex flex-col h-full pt-20 pb-24 px-4 md:py-26 md:px-32 w-full items-center gap-12">
         <div key="1" className="border-2 p-4 rounded-md shadow-md space-y-8">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-bold">Feedback Form</h2>
+        <h2 className="text-5xl font-bold glow text-center">Feedback Form</h2>
+          <div className="space-y-2 ">
             <p>
               We value your feedback. Please fill in the form below to help us
               improve our services.
             </p>
           </div>
-          <form className="space-y-4" onSubmit={handleSubmit}>
+          <form className="space-y-4 min-w-[40vw]" onSubmit={handleSubmit}>
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
               <Input
@@ -108,7 +106,7 @@ function Feedback() {
             </div>
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <Button
-              className="w-full flex justify-center items-center"
+              className="w-full flex justify-center items-center bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full p-3 shadow-md transition duration-300 hover:opacity-90"
               type="submit"
               disabled={loading}
             >

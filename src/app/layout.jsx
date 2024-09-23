@@ -1,6 +1,9 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Footer } from "@/components/Home_Pages/Footer";
+import Container from "@/components/Home_Pages/Container";
+import HomeHeader from "@/components/Header";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,6 +26,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+      <script src="https://cdn.jsdelivr.net/npm/cloudinary-video-player/dist/cld-video-player.min.js" type="text/javascript"></script>
+
         <script
           src="https://upload-widget.cloudinary.com/global/all.js"
           type="text/javascript"
@@ -31,16 +36,20 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-          {/* <Header /> */}
-          {children}
-      </ThemeProvider>
-        </body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <HomeHeader />
+          <Container>
+            {/* <Header /> */}
+            {children}
+          </Container>
+          <Footer />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

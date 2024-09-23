@@ -20,7 +20,7 @@ export async function GET() {
 
     // Shuffle the images array to simulate randomness
     const shuffledImages = result.resources.sort(() => 0.5 - Math.random());
-    const randomImages = shuffledImages.slice(0, 6);
+    const randomImages = shuffledImages.slice(0, 50);
 
     // Generate image URLs without transformations
     const imageUrls = randomImages.map((file) => {
