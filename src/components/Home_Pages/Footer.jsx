@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { GitHubLogoIcon, TwitterLogoIcon } from '@radix-ui/react-icons'
-
+import logo from "@/assets/post_logo.png"
 
 export function Footer() {
   return (
@@ -13,7 +13,7 @@ export function Footer() {
             href="/"
             className="pointer flex items-center"
           >
-            <Image src='/image/post_logo.png' alt='logo' width={50} height={50}/>
+            <Image src={logo} alt='logo' width={50} height={50}/>
           </Link>
         </div>
         <div className="flex max-w-fit items-center gap-x-4">

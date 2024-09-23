@@ -12,6 +12,7 @@ import {
 import { MenuIcon, X } from "lucide-react";
 import { ModeToggle } from "@/components/ModeToggle";
 import Image from "next/image";
+import logo from "../assets/post_logo.png"
 
 export default function HomeHeader({ className }) {
   const pathname = usePathname();
@@ -26,7 +27,7 @@ export default function HomeHeader({ className }) {
     <Link href="/" className="pointer flex items-center">
       <Image
         alt="logo"
-        src="/image/post_logo.png"
+        src={logo}
         className="m-3"
         width={50}
         height={50}
