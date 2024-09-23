@@ -24,29 +24,24 @@ export default function QuoteAll() {
 
   const fetchImages = async () => {
     try {
-      const response = await fetch(`/api/getImages?rand=${Math.random()}`, {
-        headers: { 'Cache-Control': 'no-cache' }
-      });
-      console.log(response)
+      const response = await fetch(`/api/getImages?rand=${Math.random()}`);
       const data = await response.json();
-      setImages(data);
+      setImages([...data]); // Create a new array
     } catch (error) {
       console.error("Error fetching images:", error);
     }
   };
-
+  
   const fetchQuotes = async () => {
     try {
-      const response = await fetch(`/api/quotes?rand=${Math.random()}`, {
-        headers: { 'Cache-Control': 'no-cache' }
-      });
+      const response = await fetch(`/api/quotes?rand=${Math.random()}`);
       const data = await response.json();
-      console.log(response)
-      setQuotes(data);
+      setQuotes([...data]); // Create a new array
     } catch (error) {
       console.error("Error fetching quotes:", error);
     }
   };
+  
 
   const handleDownload = async (image, quote, index) => {
     setDownloadingIndex(index);
