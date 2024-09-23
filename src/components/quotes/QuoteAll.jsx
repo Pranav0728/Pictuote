@@ -27,7 +27,7 @@ export default function QuoteAll() {
       const response = await fetch(`/api/getImages?rand=${Math.random()}`, {
         headers: { 'Cache-Control': 'no-cache' }
       });
-
+      console.log(response)
       const data = await response.json();
       setImages(data);
     } catch (error) {
@@ -41,6 +41,7 @@ export default function QuoteAll() {
         headers: { 'Cache-Control': 'no-cache' }
       });
       const data = await response.json();
+      console.log(response)
       setQuotes(data);
     } catch (error) {
       console.error("Error fetching quotes:", error);
