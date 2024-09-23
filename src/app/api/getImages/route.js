@@ -26,7 +26,7 @@ export async function GET() {
     const imageUrls = randomImages.map((file) => {
       return (file.public_id);
     });
-
+    console.log(imageUrls);
     return NextResponse.json(imageUrls);
   } catch (e) {
     console.error("Error fetching images from Cloudinary:", e.message);
