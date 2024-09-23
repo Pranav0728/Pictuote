@@ -24,7 +24,10 @@ export default function QuoteAll() {
 
   const fetchImages = async () => {
     try {
-      const response = await fetch(`/api/getImages?rand=${Math.random()}`);
+      const response = await fetch(`/api/getImages?rand=${Math.random()}`, {
+        headers: { 'Cache-Control': 'no-cache' }
+      });
+
       const data = await response.json();
       setImages(data);
     } catch (error) {
@@ -34,7 +37,9 @@ export default function QuoteAll() {
 
   const fetchQuotes = async () => {
     try {
-      const response = await fetch(`/api/quotes?rand=${Math.random()}`);
+      const response = await fetch(`/api/quotes?rand=${Math.random()}`, {
+        headers: { 'Cache-Control': 'no-cache' }
+      });
       const data = await response.json();
       setQuotes(data);
     } catch (error) {
