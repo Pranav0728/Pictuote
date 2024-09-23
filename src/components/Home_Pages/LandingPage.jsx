@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState, useEffect } from "react";
 import { FileText, Share2, ImageIcon } from "lucide-react";
 import Link from "next/link";
@@ -126,7 +126,7 @@ export default function LandingPage() {
             Get Started with <span className="glowi">Pictuote</span>
           </h1>
           <p className="max-w-lg md:max-w-2xl text-base md:text-xl mx-10 text-gray-600">
-            Whether you're a professional content creator or just getting
+            Whether you&apos;re a professional content creator or just getting
             started, Pictuote has everything you need to make an impact.
           </p>
 

@@ -2,7 +2,6 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import {
   Drawer,
   DrawerClose,
@@ -13,25 +12,14 @@ import {
 import { MenuIcon, X } from "lucide-react";
 import { ModeToggle } from "@/components/ModeToggle";
 import Image from "next/image";
-import { useRef } from "react"; // Using useRef to manage Drawer state
 
 export default function HomeHeader({ className }) {
   const pathname = usePathname();
-  // const drawerRef = useRef(null); // Ref to manage Drawer
 
   const items = [
-    {
-      href: "/",
-      title: "Home",
-    },
-    {
-      href: `/post`,
-      title: "Posts",
-    },
-    {
-      href: `/feedback`,
-      title: "Feedback",
-    },
+    { href: "/", title: "Home" },
+    { href: "/post", title: "Posts" },
+    { href: "/feedback", title: "Feedback" },
   ];
 
   const getLogo = () => (
@@ -58,18 +46,13 @@ export default function HomeHeader({ className }) {
     return (
       <>
         {items.map((item) => {
-          // Check for exact match on the Home route and partial match for other routes
           const isHomePage = item.href === "/" && pathname === "/";
           const isOtherPage = item.href !== "/" && pathname.includes(item.href);
           const selected = isHomePage || isOtherPage;
 
           return (
             <Link href={item.href} key={item.title} passHref>
-              <p
-                className={cn(
-                  selected ? "text-xl font-bold cursor-pointer" : " cursor-pointer text-lg"
-                )}
-              >
+              <p className={cn(selected ? "text-xl font-bold cursor-pointer" : "cursor-pointer text-lg")}>
                 {item.title}
               </p>
             </Link>
@@ -80,29 +63,18 @@ export default function HomeHeader({ className }) {
   };
 
   return (
-    <div
-      className={cn(
-        `flex md:h-15 h-20 items-center justify-center w-full border-b `,
-        className
-      )}
-    >
+    <div className={cn(`flex md:h-15 h-20 items-center justify-center w-full border-b`, className)}>
       <div className="w-full max-w-[1000px] md:px-8 px-4">
-        {/* Desktop */}
         <div className="flex items-center gap-x-8 w-full">
           <div className="md:flex-0 min-w-fit flex-1">{getLogo()}</div>
-          <div className="hidden md:flex  items-center w-full justify-between">
-            <div className="flex items-center gap-x-8 flex-1">
-              {getHeaderItems()}
-            </div>
+          <div className="hidden md:flex items-center w-full justify-between">
+            <div className="flex items-center gap-x-8 flex-1">{getHeaderItems()}</div>
             {getAuthButtons()}
           </div>
-          {/* Mobile */}
           <div className="md:hidden flex gap-x-4 items-center">
             {getAuthButtons()}
-            {/* Ref to manage Drawer */}
             <Drawer direction="right">
               <DrawerTrigger asChild>
-                {/* Wrapping MenuIcon in a button */}
                 <button>
                   <MenuIcon />
                 </button>
@@ -111,7 +83,6 @@ export default function HomeHeader({ className }) {
                 <div className="mx-auto w-full p-5">
                   <DrawerHeader>
                     <DrawerClose asChild>
-                      {/* Wrapping X icon in a button */}
                       <button className="w-full flex items-end justify-end">
                         <X />
                       </button>

@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Footer } from "@/components/Home_Pages/Footer";
 import Container from "@/components/Home_Pages/Container";
 import HomeHeader from "@/components/Header";
+import Script from 'next/script'; // Import Script from next/script
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,16 +27,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-      <script src="https://cdn.jsdelivr.net/npm/cloudinary-video-player/dist/cld-video-player.min.js" type="text/javascript"></script>
-
-        <script
+        <Script
+          src="https://cdn.jsdelivr.net/npm/cloudinary-video-player/dist/cld-video-player.min.js"
+          strategy="afterInteractive" // Load after the page is interactive
+        />
+        <Script
           src="https://upload-widget.cloudinary.com/global/all.js"
-          type="text/javascript"
-        ></script>
+          strategy="afterInteractive" // Load after the page is interactive
+        />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -44,7 +45,6 @@ export default function RootLayout({ children }) {
         >
           <HomeHeader />
           <Container>
-            {/* <Header /> */}
             {children}
           </Container>
           <Footer />
