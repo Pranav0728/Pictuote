@@ -26,40 +26,32 @@ export default function QuoteAll() {
   }, [quotes]);
 
   const generateQuote = async () => {
-    setQuotes([])
-    setImages([])
     setLoading(true);
-    await fetchImages();
-    await fetchQuotes();
-    setLoading(false);
-    console.log("generateQuote called");
-  };
-
-  const fetchImages = async () => {
-    try {
-      const response = await fetch(`/api/getImages?random=${Math.random()}`,{
-        cache:'no-store'
-      });
-      const data = await response.json();
-      setImages([...data]); // Create a new array to ensure state is updated
-      console.log("fetchImages called with data:", data);
-    } catch (error) {
-      console.error("Error fetching images:", error);
-    }
-  };
-
-  const fetchQuotes = async () => {
-    try {
-      const response = await fetch(`/api/quotes?rand=${Math.random()}`,{
-        cache:'no-store'
-      });
-      const data = await response.json();
-      setQuotes([...data]); // Create a new array to ensure state is updated
-      console.log("fetchQuotes called with data:", data);
-    } catch (error) {
-      console.error("Error fetching quotes:", error);
-    }
-  };
+      await fetchImages();
+      await fetchQuotes();
+      await Promise.all([fetchImages(), fetchQuotes()]);
+      setLoading(false);
+    };
+  
+    const fetchImages = async () => {
+      try {
+        const response = await fetch(`/api/getImages?rand=${Math.random()}`);
+        const data = await response.json();
+        setImages([...data]); // Create a new array
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
+    };
+    
+    const fetchQuotes = async () => {
+      try {
+        const response = await fetch(`/api/quotes?rand=${Math.random()}`);
+        const data = await response.json();
+        setQuotes([...data]); // Create a new array
+      } catch (error) {
+        console.error("Error fetching quotes:", error);
+      }
+    };
 
   const handleDownload = async (image, quote, index) => {
     setDownloadingIndex(index);
