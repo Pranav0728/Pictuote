@@ -3,6 +3,7 @@ import { CldImage } from "next-cloudinary";
 import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { ArrowDownIcon } from "lucide-react";
+import axios from 'axios';
 
 const htmlToText = (html) => {
   const tempDiv = document.createElement("div");
@@ -10,12 +11,13 @@ const htmlToText = (html) => {
   return tempDiv.textContent || tempDiv.innerText || "";
 };
 export const fetchCache = 'force-no-store';
+
 export default function QuoteAll() {
   const [quotes, setQuotes] = useState([]);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [downloadingIndex, setDownloadingIndex] = useState(null);
-  let controller;
+
   // Log state updates to ensure they are being updated
   useEffect(() => {
     console.log("Images state updated:", images);
@@ -25,48 +27,52 @@ export default function QuoteAll() {
     console.log("Quotes state updated:", quotes);
   }, [quotes]);
 
-  const generateQuote = async () => {
+  const generateQuote = () => {
     setLoading(true);
-    await fetchImages();
-    await fetchQuotes();
-    setLoading(false);
-    console.log("generateQuote called");
+    // Fetch images and quotes in parallel
+    Promise.all([fetchImages(), fetchQuotes()])
+      .then(([imagesData, quotesData]) => {
+        setImages(imagesData);
+        setQuotes(quotesData);
+        console.log("Images and Quotes fetched successfully");
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
-  const fetchImages = async () => {
-    controller = new AbortController();
-    const signal = controller.signal;
-    try {
-      const response = await fetch(`/api/getImages?random=${Math.random()}`, { signal });
-      const data = await response.json();
-      setImages([...data]);
-      console.log("fetchImages called with data:", data);
-    } catch (error) {
-      console.error("Error fetching images:", error);
-    }
+  const fetchImages = () => {
+    return axios.get(`/api/getImages?random=${Math.random()}`)
+      .then(response => {
+        console.log("fetchImages called with data:", response.data);
+        return response.data; // return images data
+      })
+      .catch(error => {
+        console.error("Error fetching images:", error);
+        throw error; // rethrow to handle in the Promise.all
+      });
   };
-  
-  const fetchQuotes = async () => {
-    controller = new AbortController();
-    const signal = controller.signal;
-    try {
-      const response = await fetch(`/api/quotes?random=${Math.random()}`, {signal });
-      const data = await response.json();
-      setQuotes([...data]);
-      console.log("fetchQuotes called with data:", data);
-    } catch (error) {
-      console.error("Error fetching quotes:", error);
-    }
+
+  const fetchQuotes = () => {
+    return axios.get(`/api/quotes?random=${Math.random()}`)
+      .then(response => {
+        console.log("fetchQuotes called with data:", response.data);
+        return response.data; // return quotes data
+      })
+      .catch(error => {
+        console.error("Error fetching quotes:", error);
+        throw error; // rethrow to handle in the Promise.all
+      });
   };
-  
 
   const handleDownload = async (image, quote, index) => {
     setDownloadingIndex(index);
     try {
       const response = await fetch(
-        `/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(
-          quote
-        )}`
+        `/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(quote)}`
       );
       const data = await response.json();
 
