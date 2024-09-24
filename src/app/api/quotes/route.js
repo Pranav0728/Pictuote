@@ -1,8 +1,10 @@
+"use server"
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const response = await fetch(`https://zenquotes.io/api/quotes?random=${Math.random()}`);
+    const randomParam = Date.now(); // Use current timestamp as a unique value
+    const response = await fetch(`https://zenquotes.io/api/quotes?random=${randomParam}`);
     const data = await response.json();
 
     // Set no-cache headers

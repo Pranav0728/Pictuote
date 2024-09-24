@@ -18,9 +18,10 @@ export async function GET() {
       throw new Error("No resources found in Cloudinary response.");
     }
 
+    // Shuffle images using a unique timestamp to ensure randomness
     const shuffledImages = result.resources.sort(() => 0.5 - Math.random());
-    const randomImages = shuffledImages.slice(0, 50);
-    const imageUrls = randomImages.map((file) => file.public_id);
+    const randomImages = shuffledImages.slice(0, 1);
+    const imageUrls = randomImages.map((file) => cloudinary.url(file.public_id));
 
     // Set no-cache headers
     const response = NextResponse.json(imageUrls);
