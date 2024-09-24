@@ -6,6 +6,7 @@ import { ArrowDownIcon } from "lucide-react";
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 
+export const fetchCache = 'force-no-store'
 const htmlToText = (html) => {
   const tempDiv = document.createElement("div");
   tempDiv.innerHTML = html;
@@ -65,7 +66,8 @@ function QuoteAll() {
   };
 
   const fetchImages = (signal) => {
-    return axios.get(`/api/getImages?random=${Math.random()}`, { signal })
+    const timestamp = Date.parse(new Date().toString());
+    return axios.get(`/api/getImages?random=${timestamp}`, { signal })
       .then(response => {
         console.log("fetchImages called with data:", response.data);
         return response.data; // return images data
