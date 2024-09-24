@@ -37,7 +37,9 @@ export default function QuoteAll() {
 
   const fetchImages = async () => {
     try {
-      const response = await fetch(`/api/getImages?random=${Math.random()}`);
+      const response = await fetch(`/api/getImages?random=${Math.random()}`,{
+        cache:'no-store'
+      });
       const data = await response.json();
       setImages([...data]); // Create a new array to ensure state is updated
       console.log("fetchImages called with data:", data);
@@ -48,7 +50,9 @@ export default function QuoteAll() {
 
   const fetchQuotes = async () => {
     try {
-      const response = await fetch(`/api/quotes?rand=${Math.random()}`);
+      const response = await fetch(`/api/quotes?rand=${Math.random()}`,{
+        cache:'no-store'
+      });
       const data = await response.json();
       setQuotes([...data]); // Create a new array to ensure state is updated
       console.log("fetchQuotes called with data:", data);
