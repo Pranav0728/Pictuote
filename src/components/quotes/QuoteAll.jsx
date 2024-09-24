@@ -37,27 +37,28 @@ export default function QuoteAll() {
     controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response = await fetch(`/api/getImages?random=${Math.random()}`);
+      const response = await fetch(`/api/getImages?random=${Math.random()}`, { cache: 'no-store', signal });
       const data = await response.json();
-      setImages([...data]); // Create a new array to ensure state is updated
+      setImages([...data]);
       console.log("fetchImages called with data:", data);
     } catch (error) {
       console.error("Error fetching images:", error);
     }
   };
-
+  
   const fetchQuotes = async () => {
     controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response = await fetch(`/api/quotes?rand=${Math.random()}`);
+      const response = await fetch(`/api/quotes?random=${Math.random()}`, { cache: 'no-store', signal });
       const data = await response.json();
-      setQuotes([...data]); // Create a new array to ensure state is updated
+      setQuotes([...data]);
       console.log("fetchQuotes called with data:", data);
     } catch (error) {
       console.error("Error fetching quotes:", error);
     }
   };
+  
 
   const handleDownload = async (image, quote, index) => {
     setDownloadingIndex(index);
