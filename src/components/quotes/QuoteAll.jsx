@@ -26,6 +26,8 @@ export default function QuoteAll() {
   }, [quotes]);
 
   const generateQuote = async () => {
+    setQuotes([])
+    setImages([])
     setLoading(true);
     await fetchImages();
     await fetchQuotes();
