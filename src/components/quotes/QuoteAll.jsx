@@ -18,36 +18,38 @@ export default function QuoteAll() {
 
   const generateQuote = async () => {
     setLoading(true);
-    await Promise.all([fetchImages(), fetchQuotes()]);
+    await fetchImages();
+    await fetchQuotes();
     setLoading(false);
   };
 
   const fetchImages = async () => {
     try {
-      const response = await fetch(`/api/getImages?rand=${Math.random()}`);
+      const response = await fetch(`/api/getImages`);
       const data = await response.json();
-      setImages([...data]); // Create a new array
+      setImages(data); // Create a new array
     } catch (error) {
       console.error("Error fetching images:", error);
     }
   };
-  
+
   const fetchQuotes = async () => {
     try {
-      const response = await fetch(`/api/quotes?rand=${Math.random()}`);
+      const response = await fetch(`/api/quotes`);
       const data = await response.json();
-      setQuotes([...data]); // Create a new array
+      setQuotes(data); // Create a new array
     } catch (error) {
       console.error("Error fetching quotes:", error);
     }
   };
-  
 
   const handleDownload = async (image, quote, index) => {
     setDownloadingIndex(index);
     try {
       const response = await fetch(
-        `/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(quote)}`
+        `/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(
+          quote
+        )}`
       );
       const data = await response.json();
 
@@ -124,11 +126,7 @@ export default function QuoteAll() {
                         : "bg-gray-200"
                     }`}
                     onClick={() =>
-                      handleDownload(
-                        image,
-                        htmlToText(quotes[index].h),
-                        index
-                      )
+                      handleDownload(image, htmlToText(quotes[index].h), index)
                     }
                   >
                     {downloadingIndex === index ? (
