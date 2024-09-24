@@ -23,21 +23,21 @@ export default function LandingPage() {
   }, []);
 
   // Fetch video from Cloudinary on component mount
-  useEffect(() => {
-    const fetchVideo = async () => {
-      const publicId = "Quotes/Home/wd60awizlpy1ikdfs3s2"; // Replace with your public ID
-      const response = await fetch(`/api/getVideo?publicId=${publicId}`);
+  // useEffect(() => {
+  //   const fetchVideo = async () => {
+  //     const publicId = "Quotes/Home/wd60awizlpy1ikdfs3s2"; // Replace with your public ID
+  //     const response = await fetch(`/api/getVideo?publicId=${publicId}`);
 
-      if (response.ok) {
-        const data = await response.json();
-        setVideoSrc(data.resources[0].secure_url); // Adjust based on the response structure
-      } else {
-        console.error("Error fetching video:", response.statusText);
-      }
-    };
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setVideoSrc(data.resources[0].secure_url); // Adjust based on the response structure
+  //     } else {
+  //       console.error("Error fetching video:", response.statusText);
+  //     }
+  //   };
 
-    fetchVideo();
-  }, []);
+  //   fetchVideo();
+  // }, []);
 
   const startCreating = () => {
     setLoading(true);
@@ -79,14 +79,14 @@ export default function LandingPage() {
           </Button>
         </div>
 
-        <video
+        {/* <video
           id="player"
           loop
           autoPlay
           muted
           src={videoSrc}
           className="cld-video-player cld-fluid shadow-2xl rounded-md"
-        ></video>
+        ></video> */}
       </div>
 
       <div className="flex flex-col mt-20 md:gap-25 gap-15 items-center">
