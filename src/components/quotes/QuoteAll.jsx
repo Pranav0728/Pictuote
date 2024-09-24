@@ -28,6 +28,7 @@ export default function QuoteAll() {
     try {
       const response = await fetch(`/api/getImages`);
       const data = await response.json();
+      console.log(data)
       setImages(data); // Create a new array
       console.log("fetchImages called")
     } catch (error) {
@@ -39,6 +40,7 @@ export default function QuoteAll() {
     try {
       const response = await fetch(`/api/quotes`);
       const data = await response.json();
+      console.log(data)
       setQuotes(data); // Create a new array
       console.log("fetchQuotes called")
     } catch (error) {
