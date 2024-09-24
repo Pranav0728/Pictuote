@@ -1,19 +1,92 @@
 "use client";
 import { CldImage } from "next-cloudinary";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { ArrowDownIcon } from "lucide-react";
-import useSWR, { mutate } from 'swr';
 import axios from 'axios';
+import dynamic from 'next/dynamic';
 
-// Function to fetch data with axios
-const fetcher = (url) => axios.get(url).then((res) => res.data);
+const htmlToText = (html) => {
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = html;
+  return tempDiv.textContent || tempDiv.innerText || "";
+};
 
-export default function QuoteAll() {
+function QuoteAll() {
+  const [quotes, setQuotes] = useState([]);
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [downloadingIndex, setDownloadingIndex] = useState(null);
-  
-  const { data: images, error: imagesError } = useSWR(`/api/getImages?random=${Math.random()}`, fetcher);
-  const { data: quotes, error: quotesError } = useSWR(`/api/quotes?random=${Math.random()}`, fetcher);
+  const [abortControllers, setAbortControllers] = useState([]);
+
+  useEffect(() => {
+    console.log("Images state updated:", images);
+  }, [images]);
+
+  useEffect(() => {
+    console.log("Quotes state updated:", quotes);
+  }, [quotes]);
+
+  const generateQuote = () => {
+    setLoading(true);
+    
+    // Create a new AbortController for this request
+    const controller1 = new AbortController();
+    const controller2 = new AbortController();
+    
+    // Abort previous requests if they exist
+    abortControllers.forEach(controller => controller.abort());
+
+    // Store the controllers in state for cleanup later
+    setAbortControllers([controller1, controller2]);
+
+    // Fetch images and quotes in parallel
+    Promise.all([
+      fetchImages(controller1.signal),
+      fetchQuotes(controller2.signal)
+    ])
+      .then(([imagesData, quotesData]) => {
+        setImages(imagesData);
+        setQuotes(quotesData);
+        console.log("Images and Quotes fetched successfully");
+      })
+      .catch((error) => {
+        if (axios.isCancel(error)) {
+          console.log("Request canceled:", error.message);
+        } else {
+          console.error("Error fetching data:", error);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+        // Clear abort controllers after completion
+        setAbortControllers([]);
+      });
+  };
+
+  const fetchImages = (signal) => {
+    return axios.get(`/api/getImages?random=${Math.random()}`, { signal })
+      .then(response => {
+        console.log("fetchImages called with data:", response.data);
+        return response.data; // return images data
+      })
+      .catch(error => {
+        console.error("Error fetching images:", error);
+        throw error; // rethrow to handle in the Promise.all
+      });
+  };
+
+  const fetchQuotes = (signal) => {
+    return axios.get(`/api/quotes?random=${Math.random()}`, { signal })
+      .then(response => {
+        console.log("fetchQuotes called with data:", response.data);
+        return response.data; // return quotes data
+      })
+      .catch(error => {
+        console.error("Error fetching quotes:", error);
+        throw error; // rethrow to handle in the Promise.all
+      });
+  };
 
   const handleDownload = async (image, quote, index) => {
     setDownloadingIndex(index);
@@ -41,88 +114,76 @@ export default function QuoteAll() {
     }
   };
 
-  // Log errors
-  if (imagesError) console.error("Error fetching images:", imagesError);
-  if (quotesError) console.error("Error fetching quotes:", quotesError);
-
-  const generatePosts = () => {
-    // Call mutate to re-fetch images and quotes
-    mutate(`/api/getImages?random=${Math.random()}`);
-    mutate(`/api/quotes?random=${Math.random()}`);
-  };
-
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-center my-8">
         <Button
           className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-full shadow-lg text-lg font-bold"
-          onClick={generatePosts}
+          onClick={generateQuote}
         >
           Generate Posts
         </Button>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center mb-4">
-        {(!images && !imagesError) || (!quotes && !quotesError) ? (
-          Array(50)
-            .fill(0)
-            .map((_, index) => (
+        {loading
+          ? Array(50)
+              .fill(0)
+              .map((_, index) => (
+                <div
+                  key={index}
+                  className="relative bg-gray-200 animate-pulse h-96 rounded-lg overflow-hidden"
+                >
+                  <div className="absolute inset-0 flex items-center justify-center bg-gray-300" />
+                </div>
+              ))
+          : images.map((image, index) => (
               <div
                 key={index}
-                className="relative bg-gray-200 animate-pulse h-96 rounded-lg overflow-hidden"
+                className="relative bg-white shadow-lg border overflow-hidden"
               >
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-300" />
-              </div>
-            ))
-        ) : (
-          images.map((image, index) => (
-            <div
-              key={index}
-              className="relative bg-white shadow-lg border overflow-hidden"
-            >
-              <CldImage
-                crop="fill"
-                priority
-                width="400"
-                height="400"
-                src={image}
-                alt={`Quote Background ${index + 1}`}
-                className="object-cover"
-              />
+                <CldImage
+                  crop="fill"
+                  priority
+                  width="400"
+                  height="400"
+                  src={image}
+                  alt={`Quote Background ${index + 1}`}
+                  className="object-cover"
+                />
 
-              {quotes[index] && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 text-white text-center">
-                  <div
-                    className="text-sm md:text-lg font-semibold leading-tight"
-                    dangerouslySetInnerHTML={{ __html: quotes[index].h }}
-                  />
+                {quotes[index] && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 text-white text-center">
+                    <div
+                      className="text-sm md:text-lg font-semibold leading-tight"
+                      dangerouslySetInnerHTML={{ __html: quotes[index].h }}
+                    />
+                  </div>
+                )}
+
+                <div className="absolute bottom-0 right-0 m-2">
+                  <Button
+                    className={`hover:opacity-50 px-3 py-1 hover:bg-gray-200 rounded-lg ${
+                      downloadingIndex === index
+                        ? "bg-green-600"
+                        : "bg-gray-200"
+                    }`}
+                    onClick={() =>
+                      handleDownload(image, htmlToText(quotes[index].h), index)
+                    }
+                  >
+                    {downloadingIndex === index ? (
+                      <div className="loader"></div>
+                    ) : (
+                      <ArrowDownIcon color="black" />
+                    )}
+                  </Button>
                 </div>
-              )}
-
-              <div className="absolute bottom-0 right-0 m-2">
-                <Button
-                  className={`hover:opacity-50 px-3 py-1 hover:bg-gray-200 rounded-lg ${
-                    downloadingIndex === index
-                      ? "bg-green-600"
-                      : "bg-gray-200"
-                  }`}
-                  onClick={() =>
-                    handleDownload(image, htmlToText(quotes[index].h), index)
-                  }
-                >
-                  {downloadingIndex === index ? (
-                    <div className="loader"></div>
-                  ) : (
-                    <ArrowDownIcon color="black" />
-                  )}
-                </Button>
               </div>
-            </div>
-          ))
-        )}
+            ))}
       </div>
 
-      {!images && !imagesError && quotes.length === 0 && (
+      {!loading && quotes.length === 0 && (
         <p className="text-gray-600 text-center my-4">
           Click the button to load quotes.
         </p>
@@ -130,3 +191,5 @@ export default function QuoteAll() {
     </div>
   );
 }
+
+export default dynamic(() => Promise.resolve(QuoteAll), { ssr: false });
