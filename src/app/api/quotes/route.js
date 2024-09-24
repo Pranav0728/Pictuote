@@ -7,7 +7,7 @@ export async function GET() {
 
     const headers = new Headers();
     headers.set('Cache-Control', 'no-store');
-
+    console.log("Quote response")
     return NextResponse.json(data, { headers }); 
   } catch (e) {
     return new NextResponse(

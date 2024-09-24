@@ -21,6 +21,7 @@ export default function QuoteAll() {
     await fetchImages();
     await fetchQuotes();
     setLoading(false);
+    console.log("generateQuote called")
   };
 
   const fetchImages = async () => {
@@ -28,6 +29,7 @@ export default function QuoteAll() {
       const response = await fetch(`/api/getImages`);
       const data = await response.json();
       setImages(data); // Create a new array
+      console.log("fetchImages called")
     } catch (error) {
       console.error("Error fetching images:", error);
     }
@@ -38,6 +40,7 @@ export default function QuoteAll() {
       const response = await fetch(`/api/quotes`);
       const data = await response.json();
       setQuotes(data); // Create a new array
+      console.log("fetchQuotes called")
     } catch (error) {
       console.error("Error fetching quotes:", error);
     }
