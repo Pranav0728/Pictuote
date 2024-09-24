@@ -9,7 +9,7 @@ const htmlToText = (html) => {
   tempDiv.innerHTML = html;
   return tempDiv.textContent || tempDiv.innerText || "";
 };
-
+export const fetchCache = 'force-no-store';
 export default function QuoteAll() {
   const [quotes, setQuotes] = useState([]);
   const [images, setImages] = useState([]);
@@ -37,7 +37,7 @@ export default function QuoteAll() {
     controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response = await fetch(`/api/getImages?random=${Math.random()}`,{signal});
+      const response = await fetch(`/api/getImages?random=${Math.random()}`);
       const data = await response.json();
       setImages([...data]); // Create a new array to ensure state is updated
       console.log("fetchImages called with data:", data);
@@ -50,7 +50,7 @@ export default function QuoteAll() {
     controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response = await fetch(`/api/quotes?rand=${Math.random()}`, { signal });
+      const response = await fetch(`/api/quotes?rand=${Math.random()}`);
       const data = await response.json();
       setQuotes([...data]); // Create a new array to ensure state is updated
       console.log("fetchQuotes called with data:", data);
