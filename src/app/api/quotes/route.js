@@ -6,8 +6,10 @@ export async function GET() {
     const response = await fetch(`https://zenquotes.io/api/quotes?random=${Math.random()}`);
     const data = await response.json();
 
+    // Set 'stale-while-revalidate' headers
+
     // Return the fetched data with the cache control headers
-    return NextResponse.json(data, { headers });
+    return NextResponse.json(data);
   } catch (e) {
     // Handle any errors that may occur
     return new NextResponse(
