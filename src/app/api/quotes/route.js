@@ -8,7 +8,7 @@ export async function GET() {
 
     // Set 'stale-while-revalidate' headers
     const headers = new Headers();
-    headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+    headers.set('Cache-Control', 'no-store');
 
     // Return the fetched data with the cache control headers
     return NextResponse.json(data, { headers });

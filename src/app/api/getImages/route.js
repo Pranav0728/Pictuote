@@ -32,7 +32,7 @@ export async function GET() {
 
     // Set 'stale-while-revalidate' headers
     const headers = new Headers();
-    headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+    headers.set('Cache-Control', 'no-store');
 
     // Return the JSON response with cache headers
     return NextResponse.json(imageUrls, { headers });
