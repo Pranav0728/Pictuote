@@ -17,6 +17,7 @@ export default function QuoteAll() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [downloadingIndex, setDownloadingIndex] = useState(null);
+  const [abortControllers, setAbortControllers] = useState([]);
 
   // Log state updates to ensure they are being updated
   useEffect(() => {
@@ -29,23 +30,40 @@ export default function QuoteAll() {
 
   const generateQuote = () => {
     setLoading(true);
+    
+    // Create a new AbortController for this request
+    const controller1 = new AbortController();
+    const controller2 = new AbortController();
+    
+    // Store the controllers in state for cleanup later
+    setAbortControllers([controller1, controller2]);
+
     // Fetch images and quotes in parallel
-    Promise.all([fetchImages(), fetchQuotes()])
+    Promise.all([
+      fetchImages(controller1.signal),
+      fetchQuotes(controller2.signal)
+    ])
       .then(([imagesData, quotesData]) => {
         setImages(imagesData);
         setQuotes(quotesData);
         console.log("Images and Quotes fetched successfully");
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        if (axios.isCancel(error)) {
+          console.log("Request canceled", error.message);
+        } else {
+          console.error("Error fetching data:", error);
+        }
       })
       .finally(() => {
         setLoading(false);
+        // Clear abort controllers after completion
+        setAbortControllers([]);
       });
   };
 
-  const fetchImages = () => {
-    return axios.get(`/api/getImages?random=${Math.random()}`)
+  const fetchImages = (signal) => {
+    return axios.get(`/api/getImages?random=${Math.random()}`, { signal })
       .then(response => {
         console.log("fetchImages called with data:", response.data);
         return response.data; // return images data
@@ -56,8 +74,8 @@ export default function QuoteAll() {
       });
   };
 
-  const fetchQuotes = () => {
-    return axios.get(`/api/quotes?random=${Math.random()}`)
+  const fetchQuotes = (signal) => {
+    return axios.get(`/api/quotes?random=${Math.random()}`, { signal })
       .then(response => {
         console.log("fetchQuotes called with data:", response.data);
         return response.data; // return quotes data
