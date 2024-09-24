@@ -15,7 +15,7 @@ export default function QuoteAll() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [downloadingIndex, setDownloadingIndex] = useState(null);
-
+  let controller;
   // Log state updates to ensure they are being updated
   useEffect(() => {
     console.log("Images state updated:", images);
@@ -34,11 +34,10 @@ export default function QuoteAll() {
   };
 
   const fetchImages = async () => {
+    controller = new AbortController();
+    const signal = controller.signal;
     try {
-      const response = await fetch(`/api/getImages?random=${Math.random()}`, {
-        cache: "no-store",
-        next: { revalidate: 0 },
-      });
+      const response = await fetch(`/api/getImages?random=${Math.random()}`,{signal});
       const data = await response.json();
       setImages([...data]); // Create a new array to ensure state is updated
       console.log("fetchImages called with data:", data);
@@ -48,11 +47,10 @@ export default function QuoteAll() {
   };
 
   const fetchQuotes = async () => {
+    controller = new AbortController();
+    const signal = controller.signal;
     try {
-      const response = await fetch(`/api/quotes?rand=${Math.random()}`, {
-        cache: "no-store",
-        next: { revalidate: 0 },
-      });
+      const response = await fetch(`/api/quotes?rand=${Math.random()}`, { signal });
       const data = await response.json();
       setQuotes([...data]); // Create a new array to ensure state is updated
       console.log("fetchQuotes called with data:", data);

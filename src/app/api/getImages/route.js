@@ -21,8 +21,7 @@ export async function GET() {
     }
 
     // Shuffle images using a timestamp seed for better randomness
-    const timestamp = new Date().getTime();
-    const shuffledImages = result.resources.sort(() => 0.5 - Math.random() * timestamp);
+    const shuffledImages = result.resources.sort(() => 0.5 - Math.random());
 
     // Get the first 50 randomly shuffled images
     const randomImages = shuffledImages.slice(0, 50);
@@ -31,11 +30,8 @@ export async function GET() {
     const imageUrls = randomImages.map((file) => file.public_id);
 
     // Set 'stale-while-revalidate' headers
-    const headers = new Headers();
-    headers.set('Cache-Control', 'no-store');
-
     // Return the JSON response with cache headers
-    return NextResponse.json(imageUrls, { headers });
+    return NextResponse.json(imageUrls);
 
   } catch (e) {
     console.error("Error fetching images from Cloudinary:", e.message);
