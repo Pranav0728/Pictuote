@@ -17,10 +17,9 @@ export async function GET() {
     if (!result || !result.resources) {
       throw new Error("No resources found in Cloudinary response.");
     }
-    console.log("Cloudinary response")
+
     const shuffledImages = result.resources.sort(() => 0.5 - Math.random());
     const randomImages = shuffledImages.slice(0, 50);
-
     const imageUrls = randomImages.map((file) => file.public_id);
 
     const headers = new Headers();

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -7,12 +7,12 @@ export async function GET() {
 
     const headers = new Headers();
     headers.set('Cache-Control', 'no-store');
-    console.log("Quote response")
+
     return NextResponse.json(data, { headers }); 
   } catch (e) {
     return new NextResponse(
       JSON.stringify({ message: "Error fetching quotes", error: e.message }),
-      { status: 500 } 
+      { status: 500 }
     );
   }
 }

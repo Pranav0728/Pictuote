@@ -16,21 +16,29 @@ export default function QuoteAll() {
   const [loading, setLoading] = useState(false);
   const [downloadingIndex, setDownloadingIndex] = useState(null);
 
+  // Log state updates to ensure they are being updated
+  useEffect(() => {
+    console.log("Images state updated:", images);
+  }, [images]);
+
+  useEffect(() => {
+    console.log("Quotes state updated:", quotes);
+  }, [quotes]);
+
   const generateQuote = async () => {
     setLoading(true);
     await fetchImages();
     await fetchQuotes();
     setLoading(false);
-    console.log("generateQuote called")
+    console.log("generateQuote called");
   };
 
   const fetchImages = async () => {
     try {
-      const response = await fetch(`/api/getImages`);
+      const response = await fetch(`/api/getImages?random=${Math.random()}`);
       const data = await response.json();
-      console.log(data)
-      setImages(data); // Create a new array
-      console.log("fetchImages called")
+      setImages([...data]); // Create a new array to ensure state is updated
+      console.log("fetchImages called with data:", data);
     } catch (error) {
       console.error("Error fetching images:", error);
     }
@@ -38,11 +46,10 @@ export default function QuoteAll() {
 
   const fetchQuotes = async () => {
     try {
-      const response = await fetch(`/api/quotes`);
+      const response = await fetch(`/api/quotes?rand=${Math.random()}`);
       const data = await response.json();
-      console.log(data)
-      setQuotes(data); // Create a new array
-      console.log("fetchQuotes called")
+      setQuotes([...data]); // Create a new array to ensure state is updated
+      console.log("fetchQuotes called with data:", data);
     } catch (error) {
       console.error("Error fetching quotes:", error);
     }
