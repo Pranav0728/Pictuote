@@ -20,7 +20,7 @@ export async function GET() {
 
     // Shuffle images using a unique timestamp to ensure randomness
     const shuffledImages = result.resources.sort(() => 0.5 - Math.random());
-    const randomImages = shuffledImages.slice(0, 1);
+    const randomImages = shuffledImages.slice(0, 50);
     const imageUrls = randomImages.map((file) => cloudinary.url(file.public_id));
 
     // Set no-cache headers
@@ -38,4 +38,3 @@ export async function GET() {
 }
 
 export const revalidate = 0;
-export const fetchCache = 'force-no-store'

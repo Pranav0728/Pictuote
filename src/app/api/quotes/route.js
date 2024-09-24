@@ -3,8 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const randomParam = Date.now(); // Use current timestamp as a unique value
-    const response = await fetch(`https://zenquotes.io/api/quotes?random=${Date.now()}`);
+    const response = await fetch(`https://zenquotes.io/api/quotes?random=${math.random()}`);
     const data = await response.json();
 
     // Set no-cache headers
@@ -18,3 +17,4 @@ export async function GET() {
     );
   }
 }
+export const revalidate = 0;
