@@ -68,4 +68,5 @@ export async function GET(req) {
     );
   }
 }
+export const fetchCache = 'force-no-store'
 export const revalidate = 0;
