@@ -37,7 +37,7 @@ export default function QuoteAll() {
     controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response = await fetch(`/api/getImages?random=${Math.random()}`, { cache: 'no-store', signal });
+      const response = await fetch(`/api/getImages?random=${Math.random()}`, { signal });
       const data = await response.json();
       setImages([...data]);
       console.log("fetchImages called with data:", data);
@@ -50,7 +50,7 @@ export default function QuoteAll() {
     controller = new AbortController();
     const signal = controller.signal;
     try {
-      const response = await fetch(`/api/quotes?random=${Math.random()}`, { cache: 'no-store', signal });
+      const response = await fetch(`/api/quotes?random=${Math.random()}`, {signal });
       const data = await response.json();
       setQuotes([...data]);
       console.log("fetchQuotes called with data:", data);
