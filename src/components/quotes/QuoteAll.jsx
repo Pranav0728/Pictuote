@@ -2,12 +2,12 @@
 import { CldImage } from "next-cloudinary";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { ArrowDownIcon } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
 
 const htmlToText = (html) => {
-  const tempDiv = document.createElement('div');
+  const tempDiv = document.createElement("div");
   tempDiv.innerHTML = html;
-  return tempDiv.textContent || tempDiv.innerText || '';
+  return tempDiv.textContent || tempDiv.innerText || "";
 };
 
 export default function QuoteAll() {
@@ -47,15 +47,19 @@ export default function QuoteAll() {
   const handleDownload = async (image, quote, index) => {
     setDownloadingIndex(index); // Set the index of the downloading image
     try {
-      const response = await fetch(`/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(quote)}`);
+      const response = await fetch(
+        `/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(
+          quote
+        )}`
+      );
       const data = await response.json();
-      
+
       const imageResponse = await fetch(data.url);
       const blob = await imageResponse.blob();
       const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.download = 'quote-image.png';
+      link.download = "quote-image.png";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -67,17 +71,23 @@ export default function QuoteAll() {
     }
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <>
       <div className="container mx-auto p-4">
         <div className="flex justify-center my-8">
-        <Button
-          className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-full shadow-lg text-lg font-bold"
-          onClick={generateQuote}
-        >
-          Generate Posts
-        </Button>
-
+          <Button
+            className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-full shadow-lg text-lg font-bold"
+            onClick={generateQuote}
+          >
+            Generate Posts
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center mb-4">
@@ -119,9 +129,17 @@ export default function QuoteAll() {
                   <div className="absolute bottom-0 right-0 m-2">
                     <Button
                       className={`hover:opacity-50 hover:bg-gray-100 text-black  px-3 py-1 rounded-lg ${
-                        downloadingIndex === index ? "bg-green-600" : "bg-gray-100"
+                        downloadingIndex === index
+                          ? "bg-green-600"
+                          : "bg-gray-100"
                       }`}
-                      onClick={() => handleDownload(image, htmlToText(quotes[index].h), index)}
+                      onClick={() =>
+                        handleDownload(
+                          image,
+                          htmlToText(quotes[index].h),
+                          index
+                        )
+                      }
                     >
                       {downloadingIndex === index ? (
                         <div className="loader"></div> // Add your spinner here
@@ -138,6 +156,18 @@ export default function QuoteAll() {
           <p className="text-gray-600 text-center my-4">
             No quotes available. Click the button to load quotes.
           </p>
+        )}
+
+        {/* Conditionally display the "Scroll to Top" button */}
+        {!loading && quotes.length > 0 && (
+          <div className="fixed bottom-4 right-4">
+            <Button
+              className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white px-4 py-2 rounded-full shadow-xl transform transition-all hover:scale-110 hover:shadow-2xl focus:outline-none"
+              onClick={scrollToTop}
+            >
+              <ArrowUpIcon size={24} />
+            </Button>
+          </div>
         )}
       </div>
     </>
