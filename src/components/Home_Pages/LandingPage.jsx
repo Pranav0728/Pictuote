@@ -10,34 +10,7 @@ import "cloudinary-video-player/cld-video-player.min.css";
 export default function LandingPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [videoSrc, setVideoSrc] = useState(null);
-
-  // Load cloudinary-video-player only on client-side
-  useEffect(() => {
-    const loadCloudinaryVideoPlayer = async () => {
-      const cloudinary = await import("cloudinary-video-player");
-      // Initialize your video player or any related logic here
-    };
-
-    loadCloudinaryVideoPlayer();
-  }, []);
-
-  // Fetch video from Cloudinary on component mount
-  useEffect(() => {
-    const fetchVideo = async () => {
-      const publicId = "Quotes/Home/wd60awizlpy1ikdfs3s2"; // Replace with your public ID
-      const response = await fetch(`/api/getVideo?publicId=${publicId}`);
-
-      if (response.ok) {
-        const data = await response.json();
-        setVideoSrc(data.resources[0].secure_url); // Adjust based on the response structure
-      } else {
-        console.error("Error fetching video:", response.statusText);
-      }
-    };
-
-    fetchVideo();
-  }, []);
+  const videoSrc = "/video/LandingVideo.mov"
 
   const startCreating = () => {
     setLoading(true);

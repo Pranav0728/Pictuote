@@ -13,9 +13,6 @@ export async function GET(req) {
     const imagePublicId = searchParams.get("image");
     const quote = searchParams.get("quote") || "Your Quote Here"; // Default text if no quote provided
 
-    // Log the parameters to make sure they're correctly received
-    console.log("Image Public ID:", imagePublicId);
-    console.log("Quote:", quote);
 
     if (!imagePublicId) {
       throw new Error("Missing required query parameter: imagePublicId");
@@ -68,4 +65,3 @@ export async function GET(req) {
     );
   }
 }
-

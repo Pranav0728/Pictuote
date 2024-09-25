@@ -10,24 +10,20 @@ cloudinary.config({
 export async function GET() {
   try {
     const result = await cloudinary.search
-      .expression('folder:Quotes/General')
-      .max_results(200)
+      .expression('folder:Quotes/General') 
+      .max_results(100) // Fetch more images to choose from
       .execute();
 
     if (!result || !result.resources) {
       throw new Error("No resources found in Cloudinary response.");
     }
 
-    // Shuffle images using a unique timestamp to ensure randomness
+    // Shuffle the images array to simulate randomness
     const shuffledImages = result.resources.sort(() => 0.5 - Math.random());
     const randomImages = shuffledImages.slice(0, 50);
-    const imageUrls = randomImages.map((file) => cloudinary.url(file.public_id));
 
-    // Set no-cache headers
-    const response = NextResponse.json(imageUrls);
-    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    return response;
-
+    const imageUrls = randomImages.map((file) => file.public_id);
+    return NextResponse.json(imageUrls);
   } catch (e) {
     console.error("Error fetching images from Cloudinary:", e.message);
     return new NextResponse(
@@ -36,5 +32,4 @@ export async function GET() {
     );
   }
 }
-
 export const revalidate = 0;
