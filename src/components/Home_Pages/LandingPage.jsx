@@ -5,12 +5,11 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import Feature from "../ui/feature";
-import "cloudinary-video-player/cld-video-player.min.css";
 
 export default function LandingPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const videoSrc = "/video/LandingVideo.mov"
+  const videoSrc = "/video/LandingVideo.mp4"
 
   const startCreating = () => {
     setLoading(true);
@@ -51,9 +50,7 @@ export default function LandingPage() {
             )}
           </Button>
         </div>
-
         <video
-          id="player"
           loop
           autoPlay
           muted
