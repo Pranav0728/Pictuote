@@ -5,12 +5,10 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import Feature from "../ui/feature";
-import "cloudinary-video-player/cld-video-player.min.css";
 
 export default function LandingPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const videoSrc = "/video/LandingVideo.mp4"
 
   const startCreating = () => {
     setLoading(true);
@@ -53,13 +51,18 @@ export default function LandingPage() {
         </div>
 
         <video
-          id="player"
-          loop
-          autoPlay
-          muted
-          src={videoSrc}
-          className="cld-video-player cld-fluid shadow-2xl rounded-md"
-        ></video>
+            autoPlay
+            muted 
+            loop
+            playsInline
+            // controls
+            width="520"
+            height="360"
+            className="mt-6 mx-auto rounded-lg shadow-lg "
+          >
+            <source src="/video/LandingVideo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
       </div>
 
       <div className="flex flex-col mt-20 md:gap-25 gap-15 items-center">
