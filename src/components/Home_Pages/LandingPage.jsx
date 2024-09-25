@@ -5,10 +5,34 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import Feature from "../ui/feature";
+import "cloudinary-video-player/cld-video-player.min.css";
 
 export default function LandingPage() {
   const router = useRouter();
+  const [videoSrc, setVideoSrc] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const loadCloudinaryVideoPlayer = async () => {
+      const cloudinary = await import("cloudinary-video-player");
+      // Initialize your video player or any related logic here
+    };
+    loadCloudinaryVideoPlayer();
+  }, []);
+  // Fetch video from Cloudinary on component mount
+  useEffect(() => {
+    const fetchVideo = async () => {
+      const publicId = "Quotes/Home/hnqzix8dqzoahqixlkha"; // Replace with your public ID
+      const response = await fetch(`/api/getVideo?publicId=${publicId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setVideoSrc(data.resources[0].secure_url); // Adjust based on the response structure
+      } else {
+        console.error("Error fetching video:", response.statusText);
+      }
+    };
+    fetchVideo();
+  }, []);
 
   const startCreating = () => {
     setLoading(true);
@@ -51,15 +75,13 @@ export default function LandingPage() {
         </div>
 
         <video
-            playsInline
-            controls
-            width="520"
-            height="360"
-            className="mt-6 mx-auto rounded-lg shadow-lg "
-          >
-            <source src="video/LandingVideo.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          id="player"
+          loop
+          autoPlay
+          muted
+          src={videoSrc}
+          className="cld-video-player cld-fluid shadow-2xl rounded-md"
+        ></video>
       </div>
 
       <div className="flex flex-col mt-20 md:gap-25 gap-15 items-center">
