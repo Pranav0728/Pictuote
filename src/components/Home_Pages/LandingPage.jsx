@@ -57,7 +57,7 @@ export default function LandingPage() {
             height="360"
             className="mt-6 mx-auto rounded-lg shadow-lg "
           >
-            <source src="../../assets/LandingVideo.mp4" type="video/mp4" />
+            <source src="video/LandingVideo.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
       </div>
