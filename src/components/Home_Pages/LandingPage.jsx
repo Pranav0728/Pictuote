@@ -51,11 +51,8 @@ export default function LandingPage() {
         </div>
 
         <video
-            autoPlay
-            muted 
-            loop
             playsInline
-            // controls
+            controls
             width="520"
             height="360"
             className="mt-6 mx-auto rounded-lg shadow-lg "
