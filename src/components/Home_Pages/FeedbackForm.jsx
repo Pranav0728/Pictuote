@@ -56,7 +56,7 @@ function Feedback() {
     <>
       <div className="flex flex-col h-full pt-20 pb-24 px-4 md:py-26 md:px-32 w-full items-center gap-12">
         <div key="1" className="border-2 p-4 rounded-md shadow-md space-y-8">
-          <div className="flex justify-between items-center flex-row ">
+          <div className="flex justify-between items-center flex-col md:flex-row ">
             <h2 className="text-5xl font-bold glow text-center m-2">
               Feedback Form
             </h2>

@@ -80,8 +80,8 @@ export default function QuoteAll() {
     if (navigator.share) {
       navigator
         .share({
-          title: "Check out Pictuote",
-          text: "Generate unique quote images with Pictuote! Click to check it out:",
+          title: "✨ Discover Pictuote: Your Quote Generator!",
+          text: "Generate beautiful quote images effortlessly and post them anywhere! 🎨 Inspire your audience with your creativity. Check it out now:",
           url: window.location.href,
         })
         .then(() => {
@@ -89,11 +89,13 @@ export default function QuoteAll() {
         })
         .catch((error) => {
           console.error("Error sharing website:", error);
+          alert("Oops! Something went wrong while sharing. Please try again.");
         });
     } else {
-      alert("Sharing not supported on this browser.");
+      alert("It seems your browser doesn't support sharing. But don't worry, you can still share the link manually!");
     }
   };
+  
 
   const buyMeCoffee = () => {
     window.open("https://www.buymeacoffee.com/PranavMolawade", "_blank");
