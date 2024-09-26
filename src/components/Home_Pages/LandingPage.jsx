@@ -75,7 +75,7 @@ export default function LandingPage() {
             )}
           </Button>
         </div>
-            <Image src={img} width={900} height={900} className="shadow-2xl rounded-md"/>
+            <Image src={img} width={900} height={900} className="shadow-2xl rounded-md" unoptimized/>
         {/* <video
           // id="player"
           // loop
@@ -99,7 +99,7 @@ export default function LandingPage() {
             posts with beautiful quotes in seconds. No design skills needed.
           </p>
 
-          <div className="flex flex-col md:flex-row gap-12 items-center md:mb-20">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-center md:mb-20 mb-16">
             <Feature
               icon={<FileText size={24} />}
               headline="Unlimited Quote Designs"
@@ -118,7 +118,7 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-6 max-w-lg md:max-w-2xl items-center md:mb-20">
+        <div className="flex flex-col gap-6 max-w-lg md:max-w-2xl items-center md:mb-20 mb-16">
           <h1 className="max-w-lg md:max-w-2xl text-3xl md:text-5xl font-bold text-teal-500">
             Get Started with <span className="glowi">Pictuote</span>
           </h1>
