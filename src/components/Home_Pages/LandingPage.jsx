@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Feature from "../ui/feature";
 // import "cloudinary-video-player/cld-video-player.min.css";
+import img from "../../assets/Landing.gif"
 
 export default function LandingPage() {
   const router = useRouter();
@@ -74,7 +75,7 @@ export default function LandingPage() {
             )}
           </Button>
         </div>
-            <Image src={"/video/Landing.gif"} width={900} height={900} className="shadow-2xl rounded-md"/>
+            <Image src={img} width={900} height={900} className="shadow-2xl rounded-md"/>
         {/* <video
           // id="player"
           // loop
