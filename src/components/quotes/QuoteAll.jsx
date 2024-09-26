@@ -2,7 +2,7 @@
 import { CldImage } from "next-cloudinary";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon, Share2Icon, CoffeeIcon, WandIcon } from "lucide-react"; // Add Magic Wand icon
 
 const htmlToText = (html) => {
   const tempDiv = document.createElement("div");
@@ -14,7 +14,7 @@ export default function QuoteAll() {
   const [quotes, setQuotes] = useState([]);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [downloadingIndex, setDownloadingIndex] = useState(null); // Track the index of the downloading image
+  const [downloadingIndex, setDownloadingIndex] = useState(null);
 
   const generateQuote = () => {
     setLoading(true);
@@ -45,12 +45,10 @@ export default function QuoteAll() {
   };
 
   const handleDownload = async (image, quote, index) => {
-    setDownloadingIndex(index); // Set the index of the downloading image
+    setDownloadingIndex(index);
     try {
       const response = await fetch(
-        `/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(
-          quote
-        )}`
+        `/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(quote)}`
       );
       const data = await response.json();
 
@@ -67,7 +65,7 @@ export default function QuoteAll() {
     } catch (error) {
       console.error("Error generating image with quote:", error);
     } finally {
-      setDownloadingIndex(null); // Reset the downloading index
+      setDownloadingIndex(null);
     }
   };
 
@@ -78,15 +76,56 @@ export default function QuoteAll() {
     });
   };
 
+  const shareWebsite = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: "Check out Pictuote",
+          text: "Generate unique quote images with Pictuote! Click to check it out:",
+          url: window.location.href,
+        })
+        .then(() => {
+          console.log("Website shared successfully");
+        })
+        .catch((error) => {
+          console.error("Error sharing website:", error);
+        });
+    } else {
+      alert("Sharing not supported on this browser.");
+    }
+  };
+
+  const buyMeCoffee = () => {
+    window.open("https://www.buymeacoffee.com/PranavMolawade", "_blank");
+  };
+
   return (
     <>
       <div className="container mx-auto p-4">
-        <div className="flex justify-center my-8">
+        <div className="flex justify-center items-center my-8  md:flex-row flex-col">
+          {/* Generate Posts Button */}
           <Button
-            className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-full shadow-lg text-lg font-bold"
+            className="bg-gradient-to-r w-52 m-2 from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white px-4 py-2 rounded-full shadow-lg text-lg font-bold transform transition-all hover:scale-110 hover:shadow-2xl focus:outline-none flex items-center"
             onClick={generateQuote}
           >
+            <WandIcon className="mr-2" /> {/* Icon added */}
             Generate Posts
+          </Button>
+          {/* Share Button */}
+          <Button
+            className="bg-gradient-to-r m-2 w-52 from-green-400 to-teal-500 text-white px-4 py-2 rounded-full shadow-xl transform transition-all hover:scale-110 hover:shadow-2xl focus:outline-none flex items-center"
+            onClick={shareWebsite}
+          >
+            <Share2Icon className="mr-2" />
+            Share Pictuote
+          </Button>
+          {/* Buy Me a Coffee Button */}
+          <Button
+            className="bg-gradient-to-r m-2 w-52 from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full shadow-xl transform transition-all hover:scale-110 hover:shadow-2xl focus:outline-none flex items-center"
+            onClick={buyMeCoffee}
+          >
+            <CoffeeIcon className="mr-2" />
+            Buy Me a Coffee
           </Button>
         </div>
 
@@ -128,7 +167,7 @@ export default function QuoteAll() {
 
                   <div className="absolute bottom-0 right-0 m-2">
                     <Button
-                      className={`hover:opacity-50 hover:bg-gray-100 text-black  px-3 py-1 rounded-lg ${
+                      className={`hover:opacity-50 hover:bg-gray-100 text-black px-3 py-1 rounded-lg ${
                         downloadingIndex === index
                           ? "bg-green-600"
                           : "bg-gray-100"
@@ -136,7 +175,7 @@ export default function QuoteAll() {
                       onClick={() =>
                         handleDownload(
                           image,
-                          htmlToText(quotes[index].h),
+                          htmlToText(quotes[index]?.h || ""),
                           index
                         )
                       }
@@ -154,11 +193,10 @@ export default function QuoteAll() {
 
         {!loading && quotes.length === 0 && (
           <p className="text-gray-600 text-center my-4">
-            No quotes available. Click the button to load quotes.
+            Click the button to Generate quotes.
           </p>
         )}
 
-        {/* Conditionally display the "Scroll to Top" button */}
         {!loading && quotes.length > 0 && (
           <div className="fixed bottom-4 right-4">
             <Button

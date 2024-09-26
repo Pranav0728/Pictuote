@@ -1,4 +1,5 @@
 "use client";
+import { CoffeeIcon } from "lucide-react";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -47,12 +48,26 @@ function Feedback() {
       alert("Feedback submitted successfully!");
     }
   };
+  const buyMeCoffee = () => {
+    window.open("https://www.buymeacoffee.com/PranavMolawade", "_blank");
+  };
 
   return (
     <>
       <div className="flex flex-col h-full pt-20 pb-24 px-4 md:py-26 md:px-32 w-full items-center gap-12">
         <div key="1" className="border-2 p-4 rounded-md shadow-md space-y-8">
-        <h2 className="text-5xl font-bold glow text-center">Feedback Form</h2>
+          <div className="flex justify-between items-center flex-row ">
+            <h2 className="text-5xl font-bold glow text-center m-2">
+              Feedback Form
+            </h2>
+            <Button
+              className="bg-gradient-to-r  from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full shadow-xl transform transition-all hover:scale-110 hover:shadow-2xl focus:outline-none flex items-center"
+              onClick={buyMeCoffee}
+            >
+              <CoffeeIcon className="m-2"/>
+              <p>Buy me a coffee</p>
+            </Button>
+          </div>
           <div className="space-y-2 ">
             <p>
               We value your feedback. Please fill in the form below to help us

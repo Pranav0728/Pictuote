@@ -3,36 +3,37 @@ import { useState, useEffect } from "react";
 import { FileText, Share2, ImageIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Feature from "../ui/feature";
-import "cloudinary-video-player/cld-video-player.min.css";
+// import "cloudinary-video-player/cld-video-player.min.css";
 
 export default function LandingPage() {
   const router = useRouter();
   const [videoSrc, setVideoSrc] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const loadCloudinaryVideoPlayer = async () => {
-      const cloudinary = await import("cloudinary-video-player");
-      // Initialize your video player or any related logic here
-    };
-    loadCloudinaryVideoPlayer();
-  }, []);
-  // Fetch video from Cloudinary on component mount
-  useEffect(() => {
-    const fetchVideo = async () => {
-      const publicId = "Quotes/Home/hnqzix8dqzoahqixlkha"; // Replace with your public ID
-      const response = await fetch(`/api/getVideo?publicId=${publicId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setVideoSrc(data.resources[0].secure_url); // Adjust based on the response structure
-      } else {
-        console.error("Error fetching video:", response.statusText);
-      }
-    };
-    fetchVideo();
-  }, []);
+  // useEffect(() => {
+  //   const loadCloudinaryVideoPlayer = async () => {
+  //     const cloudinary = await import("cloudinary-video-player");
+  //     // Initialize your video player or any related logic here
+  //   };
+  //   loadCloudinaryVideoPlayer();
+  // }, []);
+  // // Fetch video from Cloudinary on component mount
+  // useEffect(() => {
+  //   const fetchVideo = async () => {
+  //     const publicId = "Quotes/Home/hnqzix8dqzoahqixlkha"; // Replace with your public ID
+  //     const response = await fetch(`/api/getVideo?publicId=${publicId}`);
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setVideoSrc(data.resources[0].secure_url); // Adjust based on the response structure
+  //     } else {
+  //       console.error("Error fetching video:", response.statusText);
+  //     }
+  //   };
+  //   fetchVideo();
+  // }, []);
 
   const startCreating = () => {
     setLoading(true);
@@ -73,15 +74,15 @@ export default function LandingPage() {
             )}
           </Button>
         </div>
-
-        <video
-          id="player"
-          loop
-          autoPlay
-          muted
-          src={videoSrc}
+            <Image src={"/video/Landing.gif"} width={900} height={900} className="shadow-2xl rounded-md"/>
+        {/* <video
+          // id="player"
+          // loop
+          // autoPlay
+          // muted
+          src={"/video/Landing.gif"}
           className="cld-video-player cld-fluid shadow-2xl rounded-md"
-        ></video>
+        ></video> */}
       </div>
 
       <div className="flex flex-col mt-20 md:gap-25 gap-15 items-center">
