@@ -19,7 +19,7 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Pictuote",
+  title: "Pictuote - Generate post Automatically",
   description: "Generate post Automatically",
 };
 
