@@ -163,7 +163,7 @@ export default function QuoteAll() {
                     <div
                       className="text-sm md:text-lg font-semibold leading-tight"
                       dangerouslySetInnerHTML={{
-                        __html: `${quotes[index].q}<br/><br/>— ${quotes[index].a}`,
+                        __html: `"${quotes[index].q}"<br/><br/>— ${quotes[index].a}`,
                       }}
                     />
                   </div>
