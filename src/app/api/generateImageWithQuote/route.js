@@ -12,6 +12,7 @@ export async function GET(req) {
     const { searchParams } = new URL(req.url);
     const imagePublicId = searchParams.get("image");
     const quote = searchParams.get("quote") || "Your Quote Here"; // Default text if no quote provided
+    const author = searchParams.get("author") || "Your author Here"; // Default text if no quote provided
 
 
     if (!imagePublicId) {
@@ -45,7 +46,7 @@ export async function GET(req) {
             font_size: 50,
             font_weight: "bold",
             text_align: "center",
-            text: quote,
+            text: `"${quote}"\n\n— ${author}`,
           },
           color: "white",
           gravity: "center",

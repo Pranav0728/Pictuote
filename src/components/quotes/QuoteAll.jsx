@@ -44,11 +44,11 @@ export default function QuoteAll() {
     }
   };
 
-  const handleDownload = async (image, quote, index) => {
+  const handleDownload = async (image, quote,author, index) => {
     setDownloadingIndex(index);
     try {
       const response = await fetch(
-        `/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(quote)}`
+        `/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(quote)}&author=${encodeURIComponent(author)}`
       );
       const data = await response.json();
 
@@ -138,7 +138,7 @@ export default function QuoteAll() {
                 .map((_, index) => (
                   <div
                     key={index}
-                    className="relative bg-gray-200 animate-pulse h-96 rounded-lg overflow-hidden"
+                    className="relative bg-gray-200 animate-pulse h-96  rounded-lg overflow-hidden"
                   >
                     <div className="absolute inset-0 flex items-center justify-center bg-gray-300" />
                   </div>
@@ -146,7 +146,7 @@ export default function QuoteAll() {
             : images.map((image, index) => (
                 <div
                   key={index}
-                  className="relative bg-white shadow-lg border overflow-hidden"
+                  className="relative bg-white shadow-lg border max-w-96 overflow-hidden"
                 >
                   <CldImage
                     crop="fill"
@@ -160,11 +160,14 @@ export default function QuoteAll() {
 
                   {quotes[index] && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 text-white text-center">
-                      <div
-                        className="text-sm md:text-lg font-semibold leading-tight"
-                        dangerouslySetInnerHTML={{ __html: quotes[index].h }}
-                      />
-                    </div>
+                    <div
+                      className="text-sm md:text-lg font-semibold leading-tight"
+                      dangerouslySetInnerHTML={{
+                        __html: `${quotes[index].q}<br/><br/>— ${quotes[index].a}`,
+                      }}
+                    />
+                  </div>
+                  
                   )}
 
                   <div className="absolute bottom-0 right-0 m-2">
@@ -177,7 +180,8 @@ export default function QuoteAll() {
                       onClick={() =>
                         handleDownload(
                           image,
-                          htmlToText(quotes[index]?.h || ""),
+                          htmlToText(quotes[index]?.q || ""),
+                          htmlToText(quotes[index]?.a || ""),
                           index
                         )
                       }
