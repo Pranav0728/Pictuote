@@ -2,7 +2,13 @@
 import { CldImage } from "next-cloudinary";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { ArrowDownIcon, ArrowUpIcon, Share2Icon, CoffeeIcon, WandIcon } from "lucide-react"; // Add Magic Wand icon
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  Share2Icon,
+  CoffeeIcon,
+  WandIcon,
+} from "lucide-react"; // Add Magic Wand icon
 
 const htmlToText = (html) => {
   const tempDiv = document.createElement("div");
@@ -44,11 +50,13 @@ export default function QuoteAll() {
     }
   };
 
-  const handleDownload = async (image, quote,author, index) => {
+  const handleDownload = async (image, quote, author, index) => {
     setDownloadingIndex(index);
     try {
       const response = await fetch(
-        `/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(quote)}&author=${encodeURIComponent(author)}`
+        `/api/generateImageWithQuote?image=${image}&quote=${encodeURIComponent(
+          quote
+        )}&author=${encodeURIComponent(author)}`
       );
       const data = await response.json();
 
@@ -92,10 +100,11 @@ export default function QuoteAll() {
           alert("Oops! Something went wrong while sharing. Please try again.");
         });
     } else {
-      alert("It seems your browser doesn't support sharing. But don't worry, you can still share the link manually!");
+      alert(
+        "It seems your browser doesn't support sharing. But don't worry, you can still share the link manually!"
+      );
     }
   };
-  
 
   const buyMeCoffee = () => {
     window.open("https://www.buymeacoffee.com/PranavMolawade", "_blank");
@@ -144,54 +153,73 @@ export default function QuoteAll() {
                   </div>
                 ))
             : images.map((image, index) => (
-                <div
-                  key={index}
-                  className="relative bg-white shadow-lg border max-w-96 overflow-hidden"
-                >
-                  <CldImage
-                    crop="fill"
-                    priority
-                    width="400"
-                    height="400"
-                    src={image}
-                    alt={`Quote Background ${index + 1}`}
-                    className="object-cover"
-                  />
-
-                  {quotes[index] && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 text-white text-center">
-                    <div
-                      className="text-sm md:text-lg font-semibold leading-tight"
-                      dangerouslySetInnerHTML={{
-                        __html: `"${quotes[index].q}"<br/><br/>— ${quotes[index].a}`,
-                      }}
+                <div key={index}>
+                  {/* Post Item */}
+                  <div className="relative bg-white shadow-lg border max-w-96 overflow-hidden">
+                    <CldImage
+                      crop="fill"
+                      priority
+                      width="400"
+                      height="400"
+                      src={image}
+                      alt={`Quote Background ${index + 1}`}
+                      className="object-cover"
                     />
-                  </div>
-                  
-                  )}
 
-                  <div className="absolute bottom-0 right-0 m-2">
-                    <Button
-                      className={`hover:opacity-50 hover:bg-gray-100 text-black px-3 py-1 rounded-lg ${
-                        downloadingIndex === index
-                          ? "bg-green-600"
-                          : "bg-gray-100"
-                      }`}
-                      onClick={() =>
-                        handleDownload(
-                          image,
-                          htmlToText(quotes[index]?.q || ""),
-                          htmlToText(quotes[index]?.a || ""),
-                          index
-                        )
-                      }
-                    >
-                      {downloadingIndex === index ? (
-                        <div className="loader"></div> // Add your spinner here
-                      ) : (
-                        <ArrowDownIcon />
-                      )}
-                    </Button>
+                    {quotes[index] && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 text-white text-center">
+                        <div
+                          className="text-sm md:text-lg font-semibold leading-tight"
+                          dangerouslySetInnerHTML={{
+                            __html: `"${quotes[index].q}"<br/><br/>— ${quotes[index].a}`,
+                          }}
+                        />
+                      </div>
+                    )}
+
+                    <div className="absolute bottom-0 right-0 m-2">
+                      <Button
+                        className={`hover:opacity-50 hover:bg-gray-100 text-black px-3 py-1 rounded-lg ${
+                          downloadingIndex === index
+                            ? "bg-green-600"
+                            : "bg-gray-100"
+                        }`}
+                        onClick={() =>
+                          handleDownload(
+                            image,
+                            htmlToText(quotes[index]?.q || ""),
+                            htmlToText(quotes[index]?.a || ""),
+                            index
+                          )
+                        }
+                      >
+                        {downloadingIndex === index ? (
+                          <div className="loader"></div> // Add your spinner here
+                        ) : (
+                          <ArrowDownIcon />
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Ad Element */}
+                  <div className="my-4">
+                    <script
+                      async
+                      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9323981475219069"
+                      crossOrigin="anonymous"
+                    ></script>
+                    <ins
+                      className="adsbygoogle"
+                      style={{ display: "block" }}
+                      data-ad-format="fluid"
+                      data-ad-layout-key="-fb+5w+4e-db+86"
+                      data-ad-client="ca-pub-9323981475219069"
+                      data-ad-slot="2344916791"
+                    ></ins>
+                    <script>
+                      (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                   </div>
                 </div>
               ))}
@@ -199,7 +227,7 @@ export default function QuoteAll() {
 
         {!loading && quotes.length === 0 && (
           <p className="text-gray-600 text-center my-4">
-            Click the button to Generate quotes.
+            Click the button to generate quotes.
           </p>
         )}
 
