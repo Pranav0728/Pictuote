@@ -27,6 +27,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+      <script defer data-website-id="672083f9c7407bae80b2428f" data-domain="pictuote.xyz" src="https://datafa.st/js/script.js"></script>
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9323981475219069"
